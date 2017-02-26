@@ -7,20 +7,33 @@
 		<script type="text/javascript">
 		</script>
 	<head>
-	<body>
+	<body bgcolor="white">
 <?php
 	$dir = "../../../shares/nedladdat";
+	$page = 1;
+	$resultsPerPage = 10;
+	$files = array();
 	if (is_dir($dir)){
-		$cnt = 0;
-  		if ($dh = opendir($dir)){
-    	while (($file = readdir($dh)) !== false && $cnt < 20){
-			if (strpos($file, '.') !== false){ 
-				$fileFix = substr($file,0,-4);
-				if(strlen($fileFix)!=0){
-					$fileEncode = urlencode($fileFix);
-					$json=file_get_contents("http://www.omdbapi.com/?t=$fileEncode");
-					$info=json_decode($json);
-					if(strlen($info->Title)!=0){
+		if ($dh = opendir($dir)){
+			while (($file = readdir($dh)) !== false){
+				if (strpos($file, '.') !== false){
+					$temp = substr($file,0,-4);
+					if(strlen($temp)!=0){
+						$files[] = $temp;
+					}
+				}
+			}
+		}
+	}
+	
+	$limit = $page * $resultsPerPage;
+	($limit > count($files)) ? $limit = count($files) : $limit = $limit;
+	for($i = ($limit - $resultsPerPage); $i < $limit; $i++) {
+		if(strlen($files[$i])!=0){
+			$fileEncode = urlencode($files[$i]);
+			$json=file_get_contents("http://www.omdbapi.com/?t=$fileEncode");
+			$info=json_decode($json);
+			if(strlen($info->Title)!=0){
 ?>
 				<div class="w3-container">
  					<div class="w3-card-4" style="width:70%">
@@ -35,29 +48,24 @@
 							
 							</span>
     						</div>
-    						<button class="w3-button w3-block w3-dark-grey">PLAY ></button>
+    						<a href="<?php echo $dir.'/'.$file?>"><button class="w3-button w3-block w3-dark-grey">PLAY ></button></a>
   					</div>
   				</div>
 <?php					
-					$cnt++;
-					}
-					else{
+			}
+			else{
 ?>
 				<div class="w3-container">
  					<div class="w3-card-4" style="width:70%">
     					<div class="w3-container">
-      						<span class="title"><?php echo $fileFix ?></span>
+      						<span class="title"><?php echo $files[$i] ?></span>
       						<button class="w3-button w3-block w3-dark-grey">PLAY ></button>
       					</div>
   					</div>
   				</div>
 <?php						
-					}
-				}
 			}
-    	}
-    	closedir($dh);
-  	}
+		}
 	}
 ?>
 	</body>
