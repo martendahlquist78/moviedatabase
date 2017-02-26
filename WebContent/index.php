@@ -43,6 +43,7 @@ session_start();
 	for($i = ($limit - $resultsPerPage); $i < $limit; $i++) {
 		if(strlen($files[$i])!=0){
 			$fileEncode = urlencode($files[$i]);
+			$fileEncode = str_replace("_",":",$fileEncode);
 			$json=file_get_contents("http://www.omdbapi.com/?t=$fileEncode");
 			$info=json_decode($json);
 			if(strlen($info->Title)!=0){
@@ -81,7 +82,7 @@ session_start();
 		if($i == $limit-1){
 			$newPage = $page+1;
 ?>
-			<a class="title" style="float:right;margin-right:2em" href="index.php?p=<?php echo $newPage?>">MORE >></a>
+			<a class="title" style="float:right;margin-right:2em" href="index.php?p=<?php echo $newPage?>"><img src="images/arrow.jpg" border="0"></a>
 <?php				
 		}
 	}
