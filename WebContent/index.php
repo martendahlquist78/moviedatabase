@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <html>
 	<head>
 		<link rel="shortcut icon" href="images/mainicon.ico">
@@ -12,20 +15,29 @@
 	$dir = "../../../shares/nedladdat";
 	$page = 1;
 	$resultsPerPage = 10;
+	if(!isset($_SESSION["files"]) || !isset($_GET['p'])){
 	$files = array();
-	if (is_dir($dir)){
-		if ($dh = opendir($dir)){
-			while (($file = readdir($dh)) !== false){
-				if (strpos($file, '.') !== false){
-					$temp = substr($file,0,-4);
-					if(strlen($temp)!=0){
-						$files[] = $temp;
+		if (is_dir($dir)){
+			if ($dh = opendir($dir)){
+				while (($file = readdir($dh)) !== false){
+					if (strpos($file, '.') !== false){
+						$temp = substr($file,0,-4);
+						if(strlen($temp)!=0){
+							$files[] = $temp;
+						}
 					}
 				}
 			}
 		}
+		$_SESSION["files"] = $files;
 	}
-	
+	else{
+		$files = $_SESSION["files"];
+	}
+	if(isset($_GET['p'])) {
+		$page = $_GET['p'];
+		$_SESSION["page"] = $_GET['p']; 
+	}
 	$limit = $page * $resultsPerPage;
 	($limit > count($files)) ? $limit = count($files) : $limit = $limit;
 	for($i = ($limit - $resultsPerPage); $i < $limit; $i++) {
@@ -36,7 +48,7 @@
 			if(strlen($info->Title)!=0){
 ?>
 				<div class="w3-container">
- 					<div class="w3-card-4" style="width:70%">
+ 					<div class="w3-card-4" style="width:80%">
     					<div class="w3-container">
       						<img src="<?php echo $info->Poster ?>" height="300" width="200" class="w3-left w3-circle w3-margin-right"/>
      						<span class="title"><?php echo $info->Title ?></span><br/><br/>
@@ -65,6 +77,12 @@
   				</div>
 <?php						
 			}
+		}
+		if($i == $limit-1){
+			$newPage = $page+1;
+?>
+			<a class="title" style="float:right;margin-right:2em" href="index.php?p=<?php echo $newPage?>">MORE >></a>
+<?php				
 		}
 	}
 ?>
