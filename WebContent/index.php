@@ -2,6 +2,7 @@
 	<head>
 		<link rel="shortcut icon" href="images/mainicon.ico">
 		<link rel="stylesheet" href="style/main.css">
+		<link rel="stylesheet" href="style/w3.css">
 		<title>Movie Database</title>
 		<script type="text/javascript">
 		</script>
@@ -21,18 +22,36 @@
 					$info=json_decode($json);
 					if(strlen($info->Title)!=0){
 ?>
-					<p class="title"><?php echo $info->Title ?></p><br/>
-					<p class="main"><?php echo $info->Runtime ?><br/>
-					<?php echo $info->Plot ?><br/>
-					<?php echo $info->Actors ?><br/>
-					<?php echo $info->imdbRating ?><br/></p>
-					<a href="http://www.imdb.com/title/<?php echo $info->imdbID ?>" target="_blank">IMDB</a><br/>
-					<img src="<?php echo $info->Poster ?>" height="300" width="200"/><br/>
+				<div class="w3-container">
+ 					<div class="w3-card-4" style="width:70%">
+    					<div class="w3-container">
+      						<img src="<?php echo $info->Poster ?>" height="300" width="200" class="w3-left w3-circle w3-margin-right"/>
+     						<span class="title"><?php echo $info->Title ?></span><br/><br/>
+     						<span class="main">
+     						<?php echo $info->Runtime ?><br/><br/>
+							<?php echo $info->Plot ?><br/><br/>
+							<?php echo $info->Actors ?><br/><br/>
+							IMDB grade:<?php echo $info->imdbRating ?>&nbsp;&nbsp;&nbsp;<a href="http://www.imdb.com/title/<?php echo $info->imdbID ?>" target="_blank"><img src="images/imdb.png" border="0"/></a><br/>
+							
+							</span>
+    						</div>
+    						<button class="w3-button w3-block w3-dark-grey">PLAY ></button>
+  					</div>
+  				</div>
 <?php					
 					$cnt++;
 					}
 					else{
-						echo "<p class='main'>Hittade ingen info för ".$fileFix."</p><br>";
+?>
+				<div class="w3-container">
+ 					<div class="w3-card-4" style="width:70%">
+    					<div class="w3-container">
+      						<span class="title"><?php echo $fileFix ?></span>
+      						<button class="w3-button w3-block w3-dark-grey">PLAY ></button>
+      					</div>
+  					</div>
+  				</div>
+<?php						
 					}
 				}
 			}
