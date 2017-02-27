@@ -12,10 +12,17 @@ session_start();
 	<head>
 	<body bgcolor="white">
 <?php
+	function in_array_insensitive($needle, $haystack) {
+		$needle = strtolower($needle);
+		foreach($haystack as $k => $v) {
+			$haystack[$k] = strtolower($v);
+		}
+		return in_array($needle, $haystack);
+	}
 	$dir = "../../../shares/nedladdat";
 	$page = 1;
 	$resultsPerPage = 10;
-	if(!isset($_SESSION["files"]) || !isset($_GET['p'])){
+	if(!isset($_SESSION["files"]) || (isset($_GET['s']) && $_GET['s'])=='' || (!isset($_GET['p']) && !isset($_GET['s']))){
 	$files = array();
 		if (is_dir($dir)){
 			if ($dh = opendir($dir)){
@@ -31,6 +38,12 @@ session_start();
 		}
 		$_SESSION["files"] = $files;
 	}
+	else if(isset($_GET['s'])){
+		$fileCopy = $_SESSION["files"];
+		if (in_array_insensitive($_GET['s'],$fileCopy)) {
+			$files[] = $_GET['s'];
+		}
+	}
 	else{
 		$files = $_SESSION["files"];
 	}
@@ -40,6 +53,12 @@ session_start();
 	}
 	$limit = $page * $resultsPerPage;
 	($limit > count($files)) ? $limit = count($files) : $limit = $limit;
+?>
+<form action="index.php" method="get">
+  <input class="w3-input w3-border" type="text" name="s" placeholder="Search" style="width:30%">
+  <button type="submit" class="w3-btn w3-padding w3-dark-grey" style="width:120px">GO!</button>
+</form>
+<?php 
 	for($i = ($limit - $resultsPerPage); $i < $limit; $i++) {
 		if(strlen($files[$i])!=0){
 			$fileEncode = urlencode($files[$i]);
