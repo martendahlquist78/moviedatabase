@@ -16,7 +16,6 @@ session_start();
 		$found = array();
 		foreach ($array as $key => $value) {
 			if(startsWith($value,$searchword)){
-				echo $value;
 				$found[] = $value;
 			}
 		}
@@ -48,7 +47,7 @@ session_start();
 	}
 	else if(isset($_GET['s'])){
 		$fileCopy = $_SESSION["files"];
-		$files[] = find_in_array($_GET['s'],$fileCopy);
+		$files = find_in_array($_GET['s'],$fileCopy);
 	}
 	else{
 		$files = $_SESSION["files"];
