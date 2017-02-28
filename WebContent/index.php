@@ -12,12 +12,20 @@ session_start();
 	<head>
 	<body bgcolor="white">
 <?php
-	function in_array_insensitive($needle, $haystack) {
-		$needle = strtolower($needle);
-		foreach($haystack as $k => $v) {
-			$haystack[$k] = strtolower($v);
+	function find_in_array($searchword, $array){
+		$found = array();
+		foreach ($array as $key => $value) {
+			if(startsWith($value,$searchword)){
+				echo $value;
+				$found[] = $value;
+			}
 		}
-		return in_array($needle, $haystack);
+		return $found;
+	}
+	function startsWith($haystack, $needle)
+	{
+		$length = strlen($needle);
+		return (substr($haystack, 0, $length) === $needle);
 	}
 	$dir = "../../../shares/nedladdat";
 	$page = 1;
@@ -40,9 +48,7 @@ session_start();
 	}
 	else if(isset($_GET['s'])){
 		$fileCopy = $_SESSION["files"];
-		if (in_array_insensitive($_GET['s'],$fileCopy)) {
-			$files[] = $_GET['s'];
-		}
+		$files[] = find_in_array($_GET['s'],$fileCopy);
 	}
 	else{
 		$files = $_SESSION["files"];
