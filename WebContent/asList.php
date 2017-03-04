@@ -60,7 +60,7 @@ session_start();
 	$limit = $page * $resultsPerPage;
 	($limit > count($files)) ? $limit = count($files) : $limit = $limit;
 ?>
-<span style="float:right"><a href="index.php"><img src="images/detail.png"/></a></span>
+<span><a href="index.php"><img src="images/detail.png"/></a></span>
 <?php 
 	for($i = ($limit - $resultsPerPage); $i < $limit; $i++) {
 		if(strlen($files[$i])!=0){

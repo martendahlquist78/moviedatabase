@@ -61,11 +61,11 @@ session_start();
 	$limit = $page * $resultsPerPage;
 	($limit > count($files)) ? $limit = count($files) : $limit = $limit;
 ?>
-<form action="index.php" method="get">
-  <input class="w3-input w3-border" type="text" name="s" placeholder="Search" style="width:30%">
-  <button type="submit" class="w3-btn w3-padding w3-dark-grey" style="width:120px">GO!</button>
+<form action="index.php" method="get" style="width: 20em;float: right;">
+  <input class="w3-input w3-border" type="text" name="s" placeholder="Search" style="overflow: hidden; padding-right;width:100%">
+  <button type="submit" class="w3-btn w3-padding w3-dark-grey" style="width:120px;float:right">GO!</button>
 </form>
-<span style="float:right"><a href="asList.php"><img src="images/list.png"/></a></span>
+<span><a href="asList.php"><img src="images/list.png"/></a></span>
 <?php 
 	for($i = ($limit - $resultsPerPage); $i < $limit; $i++) {
 		if(strlen($files[$i])!=0){
