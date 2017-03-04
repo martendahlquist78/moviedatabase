@@ -22,3 +22,8 @@ a:hover {
 a:active {
     color: black;
 }
+.listImage{
+	float:left;
+	margin-right:1em;
+	margin-bottom:1em;
+}
